@@ -1,0 +1,20 @@
+# Dépendances
+node_modules/
+
+# Compilations
+dist/
+
+# Variables sensibles
+.env
+.env.local
+.env.production
+
+# WebStorm
+.idea/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Journaux
+*.log
