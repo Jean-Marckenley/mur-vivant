@@ -9,9 +9,15 @@ interface MessageEntrant {
     texte: string;
 }
 
+interface ReponseEntrante {
+    id: number;
+    reponse: string;
+}
+
 interface Message extends MessageEntrant {
     id: number;
     date: string;
+    reponse?: string;
 }
 
 const port = Number(process.env.PORT ?? 3001);
@@ -20,6 +26,7 @@ const redisUrl =
 
 const cleMessages = 'mur:messages';
 const canalMessages = 'mur-messages';
+const canalReponses = 'mur-reponses';
 
 const app = express();
 const serveurHttp = createServer(app);
@@ -122,6 +129,57 @@ io.on('connection', (socket) => {
         },
     );
 
+    socket.on(
+        'repondre-message',
+        async (donnees: ReponseEntrante) => {
+            if (
+                typeof donnees?.id !== 'number' ||
+                typeof donnees?.reponse !== 'string'
+            ) {
+                return;
+            }
+
+            const reponse = donnees.reponse.trim();
+
+            if (reponse === '' || reponse.length > 250) {
+                return;
+            }
+
+            const indexMessage = messages.findIndex(
+                (message) => message.id === donnees.id,
+            );
+
+            if (indexMessage === -1) {
+                return;
+            }
+
+            const messageActuel = messages[indexMessage];
+
+            if (!messageActuel) {
+                return;
+            }
+
+            const messageModifie: Message = {
+                ...messageActuel,
+                reponse,
+            };
+
+            messages[indexMessage] = messageModifie;
+
+            if (redisDisponible) {
+                const messageJson = JSON.stringify(messageModifie);
+
+                await publicationRedis
+                    .multi()
+                    .lSet(cleMessages, indexMessage, messageJson)
+                    .publish(canalReponses, messageJson)
+                    .exec();
+            } else {
+                io.emit('message-modifie', messageModifie);
+            }
+        },
+    );
+
     socket.on('disconnect', () => {
         participants = Math.max(0, participants - 1);
 
@@ -164,6 +222,29 @@ async function demarrerServeur() {
                     io.emit('message-ajoute', message);
                 } catch {
                     console.error('Message Redis invalide ignoré');
+                }
+            },
+        );
+
+        await abonnementRedis.subscribe(
+            canalReponses,
+            (contenu) => {
+                try {
+                    const messageModifie =
+                        JSON.parse(contenu) as Message;
+
+                    const indexMessage = messages.findIndex(
+                        (message) =>
+                            message.id === messageModifie.id,
+                    );
+
+                    if (indexMessage !== -1) {
+                        messages[indexMessage] = messageModifie;
+                    }
+
+                    io.emit('message-modifie', messageModifie);
+                } catch {
+                    console.error('Réponse Redis invalide ignorée');
                 }
             },
         );

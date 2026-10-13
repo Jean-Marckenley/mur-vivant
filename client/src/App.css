@@ -182,3 +182,73 @@ article p {
 .page-mur .qr-code {
   margin-top: 30px;
 }
+/* Page réservée aux réponses de l’animateur */
+
+.page-admin {
+  display: block;
+}
+
+.page-admin header {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.liste-messages-admin {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 1fr)
+  );
+  gap: 20px;
+}
+
+.liste-messages-admin article {
+  min-height: auto;
+}
+
+.form-reponse {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.form-reponse textarea {
+  min-height: 90px;
+}
+
+.form-reponse button {
+  margin-top: 5px;
+}
+
+/* Réponse visible sur le mur */
+
+.reponse-animateur {
+  margin-top: 16px;
+  padding: 14px;
+  border-left: 4px solid #22d3ee;
+  border-radius: 10px;
+  background: #02061799;
+}
+
+.reponse-animateur strong {
+  color: #f9a8d4;
+}
+
+.reponse-animateur p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+/* Adaptation pour les téléphones */
+
+@media (max-width: 600px) {
+  .page-admin {
+    padding: 20px 12px;
+  }
+
+  .liste-messages-admin {
+    grid-template-columns: 1fr;
+  }
+}

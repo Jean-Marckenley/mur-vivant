@@ -3,4 +3,5 @@ export interface Message {
     auteur: string;
     texte: string;
     date: string;
+    reponse?: string;
 }
