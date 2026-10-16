@@ -310,6 +310,30 @@ function App() {
           </button>
         </form>
 
+        <section className="messages-participation">
+          <h2>Messages et réponses</h2>
+
+          {messages.length === 0 && (
+              <p>Aucun message pour le moment.</p>
+          )}
+
+          {messages.map((message) => (
+              <article key={message.id}>
+                <strong>{message.auteur}</strong>
+                <p>{message.texte}</p>
+
+                {message.reponse ? (
+                    <div className="reponse-animateur">
+                      <strong>Réponse de l’animateur</strong>
+                      <p>{message.reponse}</p>
+                    </div>
+                ) : (
+                    <p>En attente d’une réponse.</p>
+                )}
+              </article>
+          ))}
+        </section>
+
         <a className="lien-mur" href="/mur">
           Voir le mur
         </a>
