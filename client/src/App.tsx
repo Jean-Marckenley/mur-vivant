@@ -322,13 +322,11 @@ function App() {
                 <strong>{message.auteur}</strong>
                 <p>{message.texte}</p>
 
-                {message.reponse ? (
+                {message.reponse && (
                     <div className="reponse-animateur">
                       <strong>Réponse de l’animateur</strong>
                       <p>{message.reponse}</p>
                     </div>
-                ) : (
-                    <p>En attente d’une réponse.</p>
                 )}
               </article>
           ))}
