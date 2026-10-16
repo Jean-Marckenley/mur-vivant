@@ -1,3 +1,5 @@
+/* Mise en page générale */
+
 #root {
   min-height: 100vh;
   background:
@@ -10,13 +12,11 @@ main {
   width: min(1200px, 100%);
   margin: auto;
   padding: 40px 20px;
-  display: grid;
-  gap: 24px;
 }
 
 header {
-  text-align: center;
   padding: 40px 20px;
+  text-align: center;
 }
 
 header > p:first-child {
@@ -32,6 +32,8 @@ h1 {
   background-clip: text;
   color: transparent;
 }
+
+/* Formulaires */
 
 form,
 section {
@@ -55,6 +57,7 @@ label {
 
 input,
 textarea {
+  width: 100%;
   padding: 12px;
   color: white;
   border: 1px solid #ffffff33;
@@ -77,11 +80,7 @@ button {
   cursor: pointer;
 }
 
-section > div {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
+/* Messages */
 
 article {
   min-height: 150px;
@@ -89,6 +88,7 @@ article {
   border: 1px solid #ffffff22;
   border-radius: 18px;
   background: linear-gradient(145deg, #172554, #312e81);
+  overflow-wrap: anywhere;
   animation: apparition 0.4s ease;
 }
 
@@ -101,49 +101,48 @@ article p {
   line-height: 1.5;
 }
 
-@keyframes apparition {
-  from {
-    opacity: 0;
-    transform: translateY(15px) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@media (min-width: 850px) {
-  main {
-    grid-template-columns: 340px 1fr;
-  }
-
-  header {
-    grid-column: 1 / -1;
-  }
-}
-.qr-code {
-  width: fit-content;
-  margin: 24px auto 0;
+.reponse-animateur {
+  margin-top: 16px;
   padding: 14px;
-  display: grid;
-  gap: 8px;
-  color: #070b18;
-  border-radius: 16px;
-  background: white;
+  border-left: 4px solid #22d3ee;
+  border-radius: 10px;
+  background: #02061799;
 }
 
-.qr-code svg {
-  display: block;
+.reponse-animateur strong {
+  color: #f9a8d4;
 }
+
+.reponse-animateur p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+/* Page de participation */
+
 .page-participation {
   width: min(600px, 100%);
-  display: block;
 }
 
 .page-participation form {
   margin-bottom: 20px;
 }
+
+.messages-participation {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.messages-participation h2 {
+  margin: 0;
+}
+
+.messages-participation article {
+  min-height: auto;
+}
+
+/* Lien vers le mur */
 
 .lien-mur {
   display: block;
@@ -162,31 +161,7 @@ article p {
   background: #67e8f9;
 }
 
-.page-mur {
-  display: block;
-}
-
-.page-mur .mur {
-  width: 100%;
-}
-
-.page-mur .liste-messages {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(240px, 1fr)
-  );
-  gap: 16px;
-}
-
-.page-mur .qr-code {
-  margin-top: 30px;
-}
-/* Page réservée aux réponses de l’animateur */
-
-.page-admin {
-  display: block;
-}
+/* Espace animateur */
 
 .page-admin header {
   max-width: 900px;
@@ -197,7 +172,7 @@ article p {
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(280px, 1fr)
+    minmax(min(100%, 280px), 1fr)
   );
   gap: 20px;
 }
@@ -222,38 +197,10 @@ article p {
   margin-top: 5px;
 }
 
-/* Réponse visible sur le mur */
+/* Mur de briques */
 
-.reponse-animateur {
-  margin-top: 16px;
-  padding: 14px;
-  border-left: 4px solid #22d3ee;
-  border-radius: 10px;
-  background: #02061799;
-}
-
-.reponse-animateur strong {
-  color: #f9a8d4;
-}
-
-.reponse-animateur p {
-  margin-bottom: 0;
-  font-size: 1rem;
-}
-
-/* Adaptation pour les téléphones */
-
-@media (max-width: 600px) {
-  .page-admin {
-    padding: 20px 12px;
-  }
-
-  .liste-messages-admin {
-    grid-template-columns: 1fr;
-  }
-}
-/* Fond de briques pour le grand écran */
-.page-mur {
+.page-mur,
+.page-participation {
   width: 100%;
   min-height: 100vh;
   padding: 32px clamp(16px, 4vw, 64px);
@@ -280,20 +227,25 @@ article p {
 }
 
 .page-mur .mur {
+  width: 100%;
   padding: clamp(12px, 2vw, 28px);
   border: 0;
   background: transparent;
   backdrop-filter: none;
 }
 
-.page-mur .liste-messages {
-  grid-template-columns:
-    repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+:is(.page-mur .liste-messages, .messages-participation) {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 260px), 1fr)
+  );
   gap: 28px;
 }
 
 /* Messages en papier */
-.page-mur .liste-messages article {
+
+:is(.page-mur .liste-messages, .messages-participation) article {
   position: relative;
   padding: 28px 22px 22px;
   color: #292524;
@@ -301,19 +253,17 @@ article p {
   border-radius: 3px;
   background: #fff3b0;
   box-shadow: 4px 8px 16px #00000055;
-  overflow-wrap: anywhere;
 }
 
-.page-mur .liste-messages article:nth-child(3n + 2) {
+:is(.page-mur .liste-messages, .messages-participation) article:nth-child(3n + 2) {
   background: #d9f2dd;
 }
 
-.page-mur .liste-messages article:nth-child(3n) {
+:is(.page-mur .liste-messages, .messages-participation) article:nth-child(3n) {
   background: #fce0e8;
 }
 
-/* Ruban adhésif */
-.page-mur .liste-messages article::before {
+:is(.page-mur .liste-messages, .messages-participation) article::before {
   content: "";
   position: absolute;
   top: -10px;
@@ -324,38 +274,217 @@ article p {
   transform: rotate(-5deg);
 }
 
-.page-mur .liste-messages article > strong {
+:is(.page-mur .liste-messages, .messages-participation) article > strong {
   color: #713f12;
 }
 
-.page-mur .reponse-animateur {
+:is(.page-mur, .page-participation) .reponse-animateur{
   border-left-color: #0f766e;
   background: #ffffffaa;
 }
 
-.page-mur .reponse-animateur strong {
+:is(.page-mur, .page-participation) .reponse-animateur strong {
   color: #115e59;
 }
 
-/* Le QR code reste sous les messages */
-.page-mur .qr-code {
+/* QR code */
+
+.qr-code {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  width: fit-content;
+  margin: 30px auto 0;
+  padding: 14px;
+  color: #070b18;
   text-align: center;
-}
-.messages-participation {
-  display: grid;
-  gap: 16px;
-  margin-top: 24px;
+  border-radius: 16px;
+  background: white;
 }
 
-.messages-participation h2 {
+.qr-code svg {
+  display: block;
+}
+
+/* Animation */
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Téléphones */
+
+@media (max-width: 600px) {
+  .page-admin {
+    padding: 20px 12px;
+  }
+
+  .liste-messages-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .page-participation {
+    padding: 16px 12px;
+  }
+
+  .page-participation header {
+    padding: 12px 0;
+  }
+
+  .page-participation h1 {
+    font-size: 2rem;
+  }
+
+  .page-participation header > p:first-child {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+
+  .page-participation form {
+    padding: 16px;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .page-participation form h2 {
+    margin: 0 0 8px;
+    font-size: 1.3rem;
+  }
+
+  .page-participation textarea {
+    min-height: 70px;
+  }
+
+  .page-participation form > p {
+    margin: 4px 0;
+    font-size: 0.85rem;
+  }
+
+  .messages-participation {
+    margin-top: 12px;
+    padding: 16px;
+  }
+
+  .messages-participation h2 {
+    font-size: 1.3rem;
+  }
+}
+/* Formulaire et messages sur le même mur */
+
+.page-participation {
+  max-width: 760px;
+}
+
+.page-participation header,
+.page-participation form {
+  border-radius: 18px;
+  background: #160e0be6;
+  box-shadow: 0 8px 24px #00000040;
+}
+
+.page-participation header {
+  margin-bottom: 20px;
+}
+
+.page-participation .messages-participation {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.messages-participation > h2,
+.messages-participation > p {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border-radius: 10px;
+  background: #160e0be6;
+}
+/* Formulaire à gauche, notes à droite */
+.page-participation {
+  width: min(1200px, 100%);
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.page-participation > header,
+.page-participation > .lien-mur {
+  grid-column: 1 / -1;
+}
+
+.page-participation > form {
   margin: 0;
 }
 
-.messages-participation article {
-  min-height: auto;
-  overflow-wrap: anywhere;
+.page-participation > .messages-participation {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 220px), 1fr)
+  );
+  gap: 24px;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.messages-participation > h2,
+.messages-participation > p {
+  grid-column: 1 / -1;
+}
+
+/* Notes colorées */
+.page-participation .messages-participation > article {
+  position: relative;
+  min-height: 160px;
+  padding: 24px 18px 18px;
+  color: #292524;
+  border: 0;
+  border-radius: 4px;
+  background: #fff3b0;
+  box-shadow: 3px 6px 14px #00000040;
+}
+
+.page-participation .messages-participation > article:nth-of-type(3n + 2) {
+  background: #d9f2dd;
+}
+
+.page-participation .messages-participation > article:nth-of-type(3n) {
+  background: #fce0e8;
+}
+
+.page-participation .messages-participation > article > strong {
+  color: #713f12;
+}
+
+.page-participation .messages-participation .reponse-animateur {
+  border-left-color: #0f766e;
+  background: #ffffffaa;
+}
+
+.page-participation .messages-participation .reponse-animateur strong {
+  color: #115e59;
+}
+
+/* Téléphone : notes sous le formulaire */
+@media (max-width: 750px) {
+  .page-participation {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
