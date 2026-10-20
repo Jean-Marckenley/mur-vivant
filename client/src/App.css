@@ -509,3 +509,68 @@ article p {
 :is(.page-mur, .page-participation) > header {
   padding: 8px 12px;
 }
+/* Page de participation compacte */
+.page-participation {
+  width: 100%;
+  max-width: none;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.page-participation > header {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.page-participation > header h1 {
+  margin: 4px 0;
+  font-size: 1.25rem;
+}
+
+.page-participation > header p {
+  margin: 4px 0;
+  font-size: 0.8rem;
+}
+
+.page-participation > header > p:first-child {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+}
+
+.page-participation > form {
+  margin: 0;
+  padding: 16px;
+}
+
+.page-participation > form h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.page-participation > .messages-participation {
+  min-width: 0;
+  margin: 0;
+}
+
+.page-participation > .messages-participation h2 {
+  font-size: 1.1rem;
+}
+
+/* Sur téléphone, tout reste sur cette même page */
+@media (max-width: 750px) {
+  .page-participation {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 751px) {
+  .page-participation > .messages-participation {
+    max-height: calc(100dvh - 160px);
+    overflow-y: auto;
+    align-content: start;
+    padding: 12px;
+  }
+}
