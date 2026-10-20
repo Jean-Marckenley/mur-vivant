@@ -488,90 +488,15 @@ article p {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-:is(.page-mur, .page-participation) > header {
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-:is(.page-mur, .page-participation) > header h1 {
-  margin: 6px 0;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-}
-
-:is(.page-mur, .page-participation) > header p {
-  margin: 8px 0;
-}
-:is(.page-mur, .page-participation) > header h1 {
-  font-size: 1.4rem;
-  margin: 4px 0;
-}
-
-:is(.page-mur, .page-participation) > header {
-  padding: 8px 12px;
-}
-/* Page de participation compacte */
-.page-participation {
-  width: 100%;
-  max-width: none;
-  padding: 16px;
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  align-items: start;
-  gap: 20px;
-}
-
-.page-participation > header {
-  grid-column: 1 / -1;
-  margin: 0;
-  padding: 8px 12px;
-}
-
-.page-participation > header h1 {
-  margin: 4px 0;
-  font-size: 1.25rem;
-}
-
-.page-participation > header p {
-  margin: 4px 0;
-  font-size: 0.8rem;
-}
-
-.page-participation > header > p:first-child {
-  font-size: 0.65rem;
-  letter-spacing: 2px;
-}
-
-.page-participation > form {
-  margin: 0;
-  padding: 16px;
-}
-
-.page-participation > form h2 {
-  margin: 0 0 8px;
-  font-size: 1.2rem;
-}
-
-.page-participation > .messages-participation {
-  min-width: 0;
-  margin: 0;
-}
-
-.page-participation > .messages-participation h2 {
-  font-size: 1.1rem;
-}
-
-/* Sur téléphone, tout reste sur cette même page */
-@media (max-width: 750px) {
-  .page-participation {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+/* Petites notes sur la page du formulaire */
 .page-participation > .messages-participation {
   grid-template-columns: repeat(
     auto-fill,
     minmax(min(100%, 180px), 1fr)
   );
-  gap: 14px;
+  gap: 16px;
+  align-items: start;
+  align-content: start;
 }
 
 .page-participation .messages-participation > article {
