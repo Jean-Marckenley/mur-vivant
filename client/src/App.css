@@ -566,11 +566,3 @@ article p {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-@media (min-width: 751px) {
-  .page-participation > .messages-participation {
-    max-height: calc(100dvh - 160px);
-    overflow-y: auto;
-    align-content: start;
-    padding: 12px;
-  }
-}
