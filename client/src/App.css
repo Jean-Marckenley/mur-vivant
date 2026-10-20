@@ -522,3 +522,29 @@ article p {
 .page-participation .messages-participation .reponse-animateur strong {
   font-size: 0.75rem;
 }
+@media (min-width: 751px) {
+  .page-participation {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+  }
+
+  .page-participation > form {
+    align-self: start;
+  }
+
+  .page-participation > .messages-participation {
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    align-content: start;
+    align-items: start;
+    padding: 12px;
+  }
+
+  .page-participation > .lien-mur {
+    margin: 0 auto;
+  }
+}
