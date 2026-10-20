@@ -48,6 +48,12 @@ const messages: Message[] = [];
 let redisDisponible = false;
 let participants = 0;
 
+const nomsConnectes = new Map<string, string>();
+
+function diffuserNoms() {
+    io.emit('participants-noms', [...nomsConnectes.values()]);
+}
+
 publicationRedis.on('error', (erreur) => {
     console.error('Erreur Redis :', erreur.message);
 });
@@ -74,9 +80,33 @@ app.get('/api/health', (_req, res) => {
         messages: messages.length,
     });
 });
-
 io.on('connection', (socket) => {
     participants++;
+
+    socket.emit(
+        'participants-noms',
+        [...nomsConnectes.values()],
+    );
+
+    socket.on('identifier-participant', (valeur: unknown) => {
+        if (typeof valeur !== 'string') {
+            return;
+        }
+
+        const nom = valeur.trim();
+
+        if (nom.length > 30) {
+            return;
+        }
+
+        if (nom === '') {
+            nomsConnectes.delete(socket.id);
+        } else {
+            nomsConnectes.set(socket.id, nom);
+        }
+
+        diffuserNoms();
+    });
 
     console.log('Un participant est connecté');
     console.log(`Participants connectés : ${participants}`);
@@ -181,6 +211,8 @@ io.on('connection', (socket) => {
     );
 
     socket.on('disconnect', () => {
+        nomsConnectes.delete(socket.id);
+        diffuserNoms();
         participants = Math.max(0, participants - 1);
 
         console.log('Un participant est déconnecté');

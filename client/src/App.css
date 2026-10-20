@@ -488,3 +488,24 @@ article p {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+:is(.page-mur, .page-participation) > header {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+:is(.page-mur, .page-participation) > header h1 {
+  margin: 6px 0;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+
+:is(.page-mur, .page-participation) > header p {
+  margin: 8px 0;
+}
+:is(.page-mur, .page-participation) > header h1 {
+  font-size: 1.4rem;
+  margin: 4px 0;
+}
+
+:is(.page-mur, .page-participation) > header {
+  padding: 8px 12px;
+}

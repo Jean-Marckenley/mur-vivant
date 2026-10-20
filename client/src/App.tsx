@@ -13,7 +13,7 @@ function App() {
   const [auteur, setAuteur] = useState('');
   const [texte, setTexte] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [participants, setParticipants] = useState(0);
+    const [participants, setParticipants] = useState<string[]>([]);
   const [reponses, setReponses] = useState<
       Record<number, string>
   >({});
@@ -45,22 +45,47 @@ function App() {
       );
     }
 
-    function recevoirParticipants(nombre: number) {
-      setParticipants(nombre);
-    }
+      function recevoirParticipants(noms: string[]) {
+          setParticipants(noms);
+      }
 
     socket.on('historique', recevoirHistorique);
     socket.on('message-ajoute', ajouterMessage);
     socket.on('message-modifie', modifierMessage);
-    socket.on('participants', recevoirParticipants);
+    socket.on('participants-noms', recevoirParticipants);
 
     return () => {
       socket.off('historique', recevoirHistorique);
       socket.off('message-ajoute', ajouterMessage);
       socket.off('message-modifie', modifierMessage);
-      socket.off('participants', recevoirParticipants);
+      socket.off('participants-noms', recevoirParticipants);
     };
   }, []);
+
+    useEffect(() => {
+        if (modeMur || modeAdmin) {
+            return;
+        }
+
+        function identifierParticipant() {
+            socket.emit('identifier-participant', auteur.trim());
+        }
+
+        // Renvoyer le nom après une reconnexion.
+        socket.on('connect', identifierParticipant);
+
+        // Attendre une courte pause dans la saisie.
+        const delai = window.setTimeout(() => {
+            if (socket.connected) {
+                identifierParticipant();
+            }
+        }, 500);
+
+        return () => {
+            window.clearTimeout(delai);
+            socket.off('connect', identifierParticipant);
+        };
+    }, [auteur, modeMur, modeAdmin]);
 
   function envoyerMessage(
       e: FormEvent<HTMLFormElement>,
@@ -111,10 +136,11 @@ function App() {
           <header>
             <p>ESPACE ANIMATEUR</p>
             <h1>Répondre aux participants</h1>
-            <p>
-              {participants} participant(s)
-              connecté(s)
-            </p>
+              <p>
+                  {participants.length > 0
+                      ? `En ligne : ${participants.join(', ')}`
+                      : 'Aucun participant identifié'}
+              </p>
           </header>
 
           <section className="liste-messages-admin">
@@ -208,10 +234,11 @@ function App() {
           <header>
             <p>EXPÉRIENCE INTERACTIVE</p>
             <h1>Le Mur vivant</h1>
-            <p>
-              {participants} participant(s)
-              connecté(s)
-            </p>
+              <p>
+                  {participants.length > 0
+                      ? `En ligne : ${participants.join(', ')}`
+                      : 'Aucun participant identifié'}
+              </p>
           </header>
 
           <section className="mur">
