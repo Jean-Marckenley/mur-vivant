@@ -102,62 +102,127 @@ form > p {
           29px 31px,
           34px 6px;
 }
-/* Le formulaire reste fixe, seul le panneau de notes défile. */
+/* Dimensions et disposition de la page */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
 html:has(.page-participation),
 body:has(.page-participation) {
   height: 100%;
   overflow: hidden;
 }
+
 #root:has(.page-participation) {
   height: 100dvh;
   min-height: 0;
-  overflow: hidden;
 }
+
 .page-participation {
   width: 100%;
+  max-width: none;
   height: 100dvh;
   min-height: 0;
-  padding: 12px;
+  margin: 0;
+  padding: 10px;
+
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 260px minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
 }
-.page-participation > header,
-.page-participation > .lien-mur {
-  grid-column: 1/-1;
+
+/* Petit titre */
+.page-participation > header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: 6px;
 }
+
+.page-participation > header h1 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.page-participation > header p {
+  display: none;
+}
+
+/* Formulaire à gauche */
 .page-participation > form {
+  grid-column: 1;
+  grid-row: 2;
   align-self: start;
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  gap: 6px;
 }
-.messages-participation {
+
+.page-participation > form h2 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.page-participation > form textarea {
+  height: 65px;
+  min-height: 65px;
+  resize: none;
+}
+
+/* Panneau des notes à droite */
+.page-participation > .messages-participation {
+  grid-column: 2;
+  grid-row: 2;
   min-width: 0;
   min-height: 0;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
+
 .messages-participation > h2 {
-  flex: none;
-  padding: 9px;
+  flex: 0 0 auto;
+  margin: 0 0 6px;
+  padding: 7px;
+  font-size: 14px;
   border-radius: 8px;
   background: #160e0be6;
 }
+
+/* Seules les notes défilent */
 .notes-defilantes {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   min-height: 0;
+  padding: 12px 8px;
   overflow-y: auto;
   overscroll-behavior: contain;
+
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 175px), 1fr));
+  grid-template-columns:
+    repeat(auto-fill, minmax(min(100%, 155px), 1fr));
   align-content: start;
   align-items: start;
-  gap: 16px;
-  padding: 12px 10px;
-  scrollbar-color: #fff3b0 #39231c;
+  gap: 14px;
 }
+
 .notes-defilantes > p {
-  grid-column: 1/-1;
+  grid-column: 1 / -1;
+}
+
+.page-participation > .lien-mur {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 0 auto;
 }
 /* Couleur enregistrée avec chaque note, sans alternance automatique. */
 article {
