@@ -240,7 +240,103 @@ io.on("connection", (socket) => {
             io.emit("message-modifie", messageModifie);
         }
     });
+    async function supprimerMessages(
+        donnees: SuppressionEntrante,
+        confirmer: ConfirmationSuppression,
+        toutSupprimer: boolean,
+    ) {
+        if (typeof confirmer !== "function") {
+            return;
+        }
 
+        if (
+            !motDePasseAdmin ||
+            donnees?.motDePasse !== motDePasseAdmin
+        ) {
+            confirmer({
+                ok: false,
+                erreur: "Mot de passe administrateur incorrect.",
+            });
+            return;
+        }
+
+        if (
+            !toutSupprimer &&
+            !Number.isSafeInteger(donnees?.id)
+        ) {
+            confirmer({ ok: false, erreur: "Message invalide." });
+            return;
+        }
+
+        const id = toutSupprimer ? undefined : donnees.id;
+
+        try {
+            if (redisDisponible) {
+                if (toutSupprimer) {
+                    await publicationRedis
+                        .multi()
+                        .del(cleMessages)
+                        .publish(canalSuppressions, JSON.stringify({ tout: true }))
+                        .exec();
+                } else {
+                    const historique = await publicationRedis.lRange(
+                        cleMessages,
+                        0,
+                        -1,
+                    );
+
+                    const contenus = historique.filter((contenu) => {
+                        try {
+                            return (JSON.parse(contenu) as Message).id === id;
+                        } catch {
+                            return false;
+                        }
+                    });
+
+                    if (contenus.length === 0) {
+                        confirmer({
+                            ok: false,
+                            erreur: "Ce message n’existe plus.",
+                        });
+                        return;
+                    }
+
+                    const transaction = publicationRedis.multi();
+
+                    for (const contenu of contenus) {
+                        transaction.lRem(cleMessages, 0, contenu);
+                    }
+
+                    await transaction
+                        .publish(canalSuppressions, JSON.stringify({ id }))
+                        .exec();
+                }
+            }
+
+            appliquerSuppression(id);
+            confirmer({ ok: true });
+        } catch (erreur) {
+            console.error("Suppression impossible :", erreur);
+            confirmer({
+                ok: false,
+                erreur: "La suppression a échoué. Réessayez.",
+            });
+        }
+    }
+
+    socket.on(
+        "supprimer-message",
+        (donnees: SuppressionEntrante, confirmer: ConfirmationSuppression) => {
+            void supprimerMessages(donnees, confirmer, false);
+        },
+    );
+
+    socket.on(
+        "vider-mur",
+        (donnees: SuppressionEntrante, confirmer: ConfirmationSuppression) => {
+            void supprimerMessages(donnees, confirmer, true);
+        },
+    );
     socket.on("disconnect", () => {
         nomsConnectes.delete(socket.id);
         diffuserNoms();
