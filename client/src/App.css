@@ -1161,12 +1161,15 @@ main.page-admin {
   overflow: visible;
   padding-bottom: 30px;
 }
-main.page-participation > header p.participants-en-ligne {
+main.page-participation > header > p.participants-en-ligne {
   display: block !important;
+  visibility: visible !important;
+  opacity: 1;
+  margin: 8px 0 0;
   color: white;
   font-size: 13px;
   line-height: 1.4;
-  margin: 8px 0 0;
   letter-spacing: normal;
   overflow-wrap: anywhere;
 }
+
