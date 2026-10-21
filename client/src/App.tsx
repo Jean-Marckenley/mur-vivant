@@ -193,8 +193,8 @@ function App() {
     }
 
     const nomsParticipants = participants.length > 0
-        ? `En ligne : ${participants.join(', ')}`
-        : 'Aucun participant identifié';
+        ? `${participants.length} participant(s) en ligne : ${participants.join(', ')}`
+        : 'Aucun participant en ligne';
 
     /* Espace administrateur */
 
