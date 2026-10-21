@@ -946,27 +946,80 @@ main.page-mur > .mur {
   overflow-y: auto;
 }
 @media (max-width: 750px) {
-  main.page-participation > .messages-participation,
-  main.page-participation > .lien-mur {
+  /* Masquer seulement les notes */
+  main.page-participation > .messages-participation {
     display: none;
   }
 
   main.page-participation {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    min-height: 0;
+    padding: 12px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   main.page-participation > header {
-    grid-column: 1;
-    grid-row: 1;
+    flex: 0 0 auto;
+    max-width: 100%;
+    margin: 0;
   }
 
   main.page-participation > form {
-    grid-column: 1;
-    grid-row: 2;
-    align-self: start;
+    flex: 0 0 auto;
     width: 100%;
-    margin: 0;
+    min-width: 0;
+    max-width: 420px;
+    max-height: none;
+    margin: 0 auto;
+    padding: 18px;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  main.page-participation > form h2 {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
+
+  main.page-participation > form input,
+  main.page-participation > form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  main.page-participation > form textarea {
+    height: 110px;
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  main.page-participation .choix-couleur input {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+  }
+
+  main.page-participation > form button {
+    width: 100%;
+    padding: 14px;
+  }
+
+  main.page-participation > .lien-mur {
+    display: block;
+    flex: 0 0 auto;
+    width: fit-content;
+    margin: 0 auto 8px;
+    padding: 12px 20px;
   }
 }
