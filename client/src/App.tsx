@@ -14,9 +14,8 @@ function App() {
     const [texte, setTexte] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
     const [participants, setParticipants] = useState<string[]>([]);
-    const [reponses, setReponses] = useState<
-        Record<number, string>
-    >({});
+    const [reponses, setReponses] = useState<Record<number, string>>({});
+    const [suppressionEnCours, setSuppressionEnCours] = useState(false);
 
     const chemin = window.location.pathname;
     const modeMur = chemin === '/mur';
@@ -29,15 +28,15 @@ function App() {
         }
 
         function ajouterMessage(message: Message) {
-            setMessages((anciensMessages) => [
-                ...anciensMessages,
+            setMessages((anciens) => [
+                ...anciens.filter((ancien) => ancien.id !== message.id),
                 message,
             ]);
         }
 
         function modifierMessage(messageModifie: Message) {
-            setMessages((anciensMessages) =>
-                anciensMessages.map((message) =>
+            setMessages((anciens) =>
+                anciens.map((message) =>
                     message.id === messageModifie.id
                         ? messageModifie
                         : message,
@@ -49,16 +48,26 @@ function App() {
             setParticipants(noms);
         }
 
+        function demanderHistorique() {
+            socket.emit('demander-historique');
+        }
+
         socket.on('historique', recevoirHistorique);
         socket.on('message-ajoute', ajouterMessage);
         socket.on('message-modifie', modifierMessage);
         socket.on('participants-noms', recevoirParticipants);
+        socket.on('connect', demanderHistorique);
+
+        if (socket.connected) {
+            demanderHistorique();
+        }
 
         return () => {
             socket.off('historique', recevoirHistorique);
             socket.off('message-ajoute', ajouterMessage);
             socket.off('message-modifie', modifierMessage);
             socket.off('participants-noms', recevoirParticipants);
+            socket.off('connect', demanderHistorique);
         };
     }, []);
 
@@ -71,10 +80,8 @@ function App() {
             socket.emit('identifier-participant', auteur.trim());
         }
 
-        // Renvoyer le nom après une reconnexion.
         socket.on('connect', identifierParticipant);
 
-        // Attendre une courte pause dans la saisie.
         const delai = window.setTimeout(() => {
             if (socket.connected) {
                 identifierParticipant();
@@ -87,21 +94,21 @@ function App() {
         };
     }, [auteur, modeMur, modeAdmin]);
 
-    function envoyerMessage(
-        e: FormEvent<HTMLFormElement>,
-    ) {
+    function envoyerMessage(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        if (
-            auteur.trim() === '' ||
-            texte.trim() === ''
-        ) {
+        const nom = auteur.trim();
+        const contenu = texte.trim();
+
+        if (!nom || !contenu) {
             return;
         }
 
+        socket.emit('identifier-participant', nom);
+
         socket.emit('nouveau-message', {
-            auteur,
-            texte,
+            auteur: nom,
+            texte: contenu,
         });
 
         setTexte('');
@@ -124,11 +131,72 @@ function App() {
             reponse,
         });
 
-        setReponses((anciennesReponses) => ({
-            ...anciennesReponses,
+        setReponses((anciennes) => ({
+            ...anciennes,
             [id]: '',
         }));
     }
+
+    function supprimerMessage(id?: number) {
+        if (suppressionEnCours) {
+            return;
+        }
+
+        if (!socket.connected) {
+            window.alert('Le serveur est déconnecté. Réessayez après la reconnexion.');
+            return;
+        }
+
+        const accepter = window.confirm(
+            id === undefined
+                ? 'Supprimer définitivement tous les messages et leurs réponses ?'
+                : 'Supprimer définitivement ce message et sa réponse ?',
+        );
+
+        if (!accepter) {
+            return;
+        }
+
+        const motDePasse = window.prompt(
+            'Mot de passe administrateur :',
+        );
+
+        if (!motDePasse) {
+            return;
+        }
+
+        setSuppressionEnCours(true);
+
+        socket.timeout(8000).emit(
+            id === undefined ? 'vider-mur' : 'supprimer-message',
+            { id, motDePasse },
+            (
+                erreur: Error | null,
+                resultat?: { ok: boolean; erreur?: string },
+            ) => {
+                setSuppressionEnCours(false);
+
+                if (erreur) {
+                    window.alert(
+                        'Pas de confirmation du serveur. Vérifiez le mur avant de réessayer.',
+                    );
+                    return;
+                }
+
+                if (!resultat?.ok) {
+                    window.alert(
+                        resultat?.erreur ?? 'Suppression impossible.',
+                    );
+                }
+            },
+        );
+    }
+
+    const nomsParticipants = participants.length > 0
+        ? `En ligne : ${participants.join(', ')}`
+        : 'Aucun participant identifié';
+
+    /* Espace administrateur */
 
     if (modeAdmin) {
         return (
@@ -136,12 +204,19 @@ function App() {
                 <header>
                     <p>ESPACE ANIMATEUR</p>
                     <h1>Répondre aux participants</h1>
-                    <p>
-                        {participants.length > 0
-                            ? `En ligne : ${participants.join(', ')}`
-                            : 'Aucun participant identifié'}
-                    </p>
+                    <p>{nomsParticipants}</p>
                 </header>
+
+                <button
+                    type="button"
+                    className="bouton-danger"
+                    onClick={() => supprimerMessage()}
+                    disabled={messages.length === 0 || suppressionEnCours}
+                >
+                    {suppressionEnCours
+                        ? 'Suppression en cours…'
+                        : 'Vider tout le mur'}
+                </button>
 
                 <section className="liste-messages-admin">
                     {messages.length === 0 && (
@@ -151,72 +226,53 @@ function App() {
                     {messages.map((message) => (
                         <article key={message.id}>
                             <strong>{message.auteur}</strong>
-
                             <p>{message.texte}</p>
 
                             {message.reponse && (
                                 <div className="reponse-animateur">
-                                    <strong>
-                                        Réponse de l’animateur
-                                    </strong>
-
+                                    <strong>Réponse de l’animateur</strong>
                                     <p>{message.reponse}</p>
                                 </div>
                             )}
 
                             <form
                                 className="form-reponse"
-                                onSubmit={(e) =>
-                                    envoyerReponse(
-                                        e,
-                                        message.id,
-                                    )
-                                }
+                                onSubmit={(e) => envoyerReponse(e, message.id)}
                             >
-                                <label
-                                    htmlFor={`reponse-${message.id}`}
-                                >
+                                <label htmlFor={`reponse-${message.id}`}>
                                     Votre réponse
                                 </label>
 
                                 <textarea
                                     id={`reponse-${message.id}`}
                                     maxLength={250}
-                                    value={
-                                        reponses[
-                                            message.id
-                                            ] ?? ''
-                                    }
+                                    value={reponses[message.id] ?? ''}
                                     onChange={(e) =>
-                                        setReponses(
-                                            (
-                                                anciennesReponses,
-                                            ) => ({
-                                                ...anciennesReponses,
-                                                [message.id]:
-                                                e.target
-                                                    .value,
-                                            }),
-                                        )
+                                        setReponses((anciennes) => ({
+                                            ...anciennes,
+                                            [message.id]: e.target.value,
+                                        }))
                                     }
                                     required
                                 />
 
                                 <p>
-                                    {
-                                        (
-                                            reponses[
-                                                message.id
-                                                ] ?? ''
-                                        ).length
-                                    }
-                                    /250 caractères
+                                    {(reponses[message.id] ?? '').length}/250 caractères
                                 </p>
 
                                 <button type="submit">
                                     Envoyer la réponse
                                 </button>
                             </form>
+
+                            <button
+                                type="button"
+                                className="bouton-danger"
+                                onClick={() => supprimerMessage(message.id)}
+                                disabled={suppressionEnCours}
+                            >
+                                Supprimer ce message
+                            </button>
                         </article>
                     ))}
                 </section>
@@ -228,41 +284,32 @@ function App() {
         );
     }
 
+    /* Mur de projection */
+
     if (modeMur) {
         return (
             <main className="page-mur">
                 <header>
                     <p>EXPÉRIENCE INTERACTIVE</p>
                     <h1>Le Mur vivant</h1>
-                    <p>
-                        {participants.length > 0
-                            ? `En ligne : ${participants.join(', ')}`
-                            : 'Aucun participant identifié'}
-                    </p>
+                    <p>{nomsParticipants}</p>
                 </header>
 
                 <section className="mur">
                     <div className="liste-messages">
+                        {messages.length === 0 && (
+                            <p>Aucun message pour le moment.</p>
+                        )}
+
                         {messages.map((message) => (
                             <article key={message.id}>
-                                <strong>
-                                    {message.auteur}
-                                </strong>
-
+                                <strong>{message.auteur}</strong>
                                 <p>{message.texte}</p>
 
                                 {message.reponse && (
                                     <div className="reponse-animateur">
-                                        <strong>
-                                            Réponse de
-                                            l’animateur
-                                        </strong>
-
-                                        <p>
-                                            {
-                                                message.reponse
-                                            }
-                                        </p>
+                                        <strong>Réponse de l’animateur</strong>
+                                        <p>{message.reponse}</p>
                                     </div>
                                 )}
                             </article>
@@ -278,24 +325,21 @@ function App() {
                             level="H"
                         />
 
-                        <strong>
-                            Scannez pour participer
-                        </strong>
+                        <strong>Scannez pour participer</strong>
                     </div>
                 </section>
             </main>
         );
     }
 
+    /* Formulaire de participation */
+
     return (
         <main className="page-participation">
             <header>
                 <p>EXPÉRIENCE INTERACTIVE</p>
                 <h1>Le Mur vivant</h1>
-                <p>
-                    Écrivez un message et affichez-le en
-                    direct.
-                </p>
+                <p>Écrivez un message et affichez-le en direct.</p>
             </header>
 
             <form onSubmit={envoyerMessage}>
@@ -310,9 +354,7 @@ function App() {
                     type="text"
                     maxLength={30}
                     value={auteur}
-                    onChange={(e) =>
-                        setAuteur(e.target.value)
-                    }
+                    onChange={(e) => setAuteur(e.target.value)}
                     required
                 />
 
@@ -324,9 +366,7 @@ function App() {
                     id="message"
                     maxLength={120}
                     value={texte}
-                    onChange={(e) =>
-                        setTexte(e.target.value)
-                    }
+                    onChange={(e) => setTexte(e.target.value)}
                     required
                 />
 
