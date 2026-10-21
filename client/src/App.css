@@ -945,3 +945,28 @@ main.page-mur > .mur {
   padding: 12px;
   overflow-y: auto;
 }
+@media (max-width: 750px) {
+  main.page-participation > .messages-participation,
+  main.page-participation > .lien-mur {
+    display: none;
+  }
+
+  main.page-participation {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow-y: auto;
+  }
+
+  main.page-participation > header {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  main.page-participation > form {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    width: 100%;
+    margin: 0;
+  }
+}
