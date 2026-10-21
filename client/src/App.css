@@ -875,3 +875,40 @@ main.page-participation > header {
     margin: 0 auto;
   }
 }
+/* Autoriser le défilement sur la page du mur */
+html:has(.page-mur),
+body:has(.page-mur) {
+  height: auto;
+  overflow: auto;
+}
+
+#root:has(.page-mur) {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
+/* Réduire le titre et son bandeau */
+main.page-mur > header {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 24px;
+  padding: 10px 16px;
+  text-align: left;
+}
+
+main.page-mur > header h1 {
+  margin: 4px 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+main.page-mur > header p {
+  margin: 4px 0;
+  font-size: 12px;
+}
+
+main.page-mur > header > p:first-child {
+  font-size: 10px;
+  letter-spacing: 2px;
+}
