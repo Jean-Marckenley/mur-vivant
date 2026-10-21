@@ -292,7 +292,9 @@ function App() {
                 <header>
                     <p>EXPÉRIENCE INTERACTIVE</p>
                     <h1>Le Mur vivant</h1>
-                    <p>{nomsParticipants}</p>
+                    <p className="participants-en-ligne">
+                        {nomsParticipants}
+                    </p>
                 </header>
 
                 <section className="mur">
@@ -339,6 +341,9 @@ function App() {
             <header>
                 <p>EXPÉRIENCE INTERACTIVE</p>
                 <h1>Le Mur vivant</h1>
+                <p className="participants-en-ligne">
+                    {nomsParticipants}
+                </p>
                 <p>Écrivez un message et affichez-le en direct.</p>
             </header>
 
