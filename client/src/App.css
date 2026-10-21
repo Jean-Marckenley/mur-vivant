@@ -643,3 +643,53 @@ main.page-participation {
     padding: 10px;
   }
 }
+/* Agrandir le formulaire sur ordinateur */
+@media (min-width: 751px) {
+  main.page-participation {
+    grid-template-columns: 340px minmax(0, 1fr);
+  }
+
+  .page-participation > form {
+    padding: 22px;
+    gap: 12px;
+  }
+
+  .page-participation > form h2 {
+    font-size: 1.3rem;
+  }
+
+  .page-participation > form input {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .page-participation > form textarea {
+    height: 120px;
+    min-height: 120px;
+    padding: 12px;
+    font-size: 16px;
+    resize: none;
+  }
+
+  .page-participation > form button {
+    padding: 14px;
+  }
+}
+
+/* Donner un fond opaque aux notes */
+.page-participation .messages-participation article,
+.page-mur .liste-messages article {
+  background-image: none;
+  background-color: #fff3b0;
+  opacity: 1;
+}
+
+.page-participation .messages-participation article:nth-of-type(3n + 2),
+.page-mur .liste-messages article:nth-of-type(3n + 2) {
+  background-color: #d9f2dd;
+}
+
+.page-participation .messages-participation article:nth-of-type(3n),
+.page-mur .liste-messages article:nth-of-type(3n) {
+  background-color: #fce0e8;
+}
