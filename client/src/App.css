@@ -1,122 +1,209 @@
-/* Base */
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
+/* Mise en page générale */
 
 #root {
-  min-height: 100dvh;
-  background: #070b18;
+  min-height: 100vh;
+  background:
+          radial-gradient(circle at top left, #6d28d955, transparent 35%),
+          radial-gradient(circle at bottom right, #06b6d455, transparent 35%),
+          #070b18;
 }
 
 main {
   width: min(1200px, 100%);
   margin: auto;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
 header {
+  padding: 40px 20px;
   text-align: center;
-  padding: 10px;
-  border-radius: 12px;
-  background: #160e0be6;
-}
-
-header p {
-  margin: 3px;
-  font-size: 0.8rem;
-  overflow-wrap: anywhere;
 }
 
 header > p:first-child {
-  color: #67e8f9;
-  font-size: 0.65rem;
-  letter-spacing: 2px;
+  color: #22d3ee;
+  font-weight: 700;
+  letter-spacing: 4px;
 }
 
 h1 {
-  margin: 4px;
-  font-size: 1.5rem;
-}
-
-h2 {
-  margin: 0 0 8px;
-  font-size: 1rem;
+  margin: 8px 0;
+  font-size: clamp(3rem, 8vw, 6rem);
+  background: linear-gradient(90deg, #22d3ee, #a78bfa, #f472b6);
+  background-clip: text;
+  color: transparent;
 }
 
 /* Formulaires */
 
+form,
+section {
+  padding: 24px;
+  border: 1px solid #ffffff22;
+  border-radius: 22px;
+  background: #ffffff0d;
+  backdrop-filter: blur(12px);
+}
+
 form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  border-radius: 12px;
-  background: #160e0be6;
+  gap: 10px;
 }
 
 label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin-top: 8px;
+  font-weight: 700;
 }
 
 input,
 textarea {
   width: 100%;
-  min-width: 0;
-  padding: 8px;
+  padding: 12px;
   color: white;
-  border: 1px solid #ffffff55;
-  border-radius: 7px;
-  background: #020617bb;
+  border: 1px solid #ffffff33;
+  border-radius: 10px;
+  background: #020617aa;
 }
 
 textarea {
-  min-height: 75px;
+  min-height: 120px;
   resize: vertical;
 }
 
 button {
-  padding: 10px;
+  padding: 14px;
   color: #07111f;
-  font-weight: 700;
+  font-weight: 800;
   border: 0;
-  border-radius: 8px;
-  background: #67e8f9;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #22d3ee, #a78bfa);
   cursor: pointer;
 }
 
-form > p {
-  margin: 0;
-  font-size: 0.75rem;
+/* Messages */
+
+article {
+  min-height: 150px;
+  padding: 20px;
+  border: 1px solid #ffffff22;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #172554, #312e81);
+  overflow-wrap: anywhere;
+  animation: apparition 0.4s ease;
 }
 
-:focus-visible {
-  outline: 3px solid #22d3ee;
-  outline-offset: 3px;
+article strong {
+  color: #67e8f9;
 }
+
+article p {
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.reponse-animateur {
+  margin-top: 16px;
+  padding: 14px;
+  border-left: 4px solid #22d3ee;
+  border-radius: 10px;
+  background: #02061799;
+}
+
+.reponse-animateur strong {
+  color: #f9a8d4;
+}
+
+.reponse-animateur p {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+/* Page de participation */
+
+.page-participation {
+  width: min(600px, 100%);
+}
+
+.page-participation form {
+  margin-bottom: 20px;
+}
+
+.messages-participation {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.messages-participation h2 {
+  margin: 0;
+}
+
+.messages-participation article {
+  min-height: auto;
+}
+
+/* Lien vers le mur */
 
 .lien-mur {
   display: block;
   width: fit-content;
-  margin: 0 auto;
-  padding: 6px 12px;
-  color: #cffafe;
-  font-size: 0.8rem;
+  margin: 20px auto;
+  padding: 12px 20px;
+  color: #67e8f9;
+  font-weight: 700;
   text-decoration: none;
   border: 1px solid #67e8f9;
-  border-radius: 7px;
-  background: #160e0be6;
+  border-radius: 10px;
 }
 
-/* Fond de briques */
+.lien-mur:hover {
+  color: #070b18;
+  background: #67e8f9;
+}
+
+/* Espace animateur */
+
+.page-admin header {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.liste-messages-admin {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 280px), 1fr)
+  );
+  gap: 20px;
+}
+
+.liste-messages-admin article {
+  min-height: auto;
+}
+
+.form-reponse {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.form-reponse textarea {
+  min-height: 90px;
+}
+
+.form-reponse button {
+  margin-top: 5px;
+}
+
+/* Mur de briques */
 
 .page-mur,
 .page-participation {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px clamp(16px, 4vw, 64px);
   background-color: #754538;
   background-image:
           linear-gradient(335deg, #a16b56 23px, transparent 23px),
@@ -131,282 +218,73 @@ form > p {
           34px 6px;
 }
 
-/* Page fixe : formulaire à gauche, notes à droite */
-
-html:has(.page-participation),
-body:has(.page-participation) {
-  height: 100%;
-  overflow: hidden;
+.page-mur header {
+  margin-bottom: 24px;
+  padding: 24px 16px;
+  border-radius: 18px;
+  background: #160e0bd9;
+  box-shadow: 0 8px 24px #00000040;
 }
 
-#root:has(.page-participation) {
-  height: 100dvh;
-  min-height: 0;
-}
-
-.page-participation {
+.page-mur .mur {
   width: 100%;
-  max-width: none;
-  height: 100dvh;
-  min-height: 0;
-  margin: 0;
-  padding: 10px;
+  padding: clamp(12px, 2vw, 28px);
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
 
+:is(.page-mur .liste-messages, .messages-participation) {
   display: grid;
-  grid-template-columns: 340px minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 10px;
-  overflow: hidden;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 260px), 1fr)
+  );
+  gap: 28px;
 }
 
-/* Petit titre */
+/* Messages en papier */
 
-.page-participation > header {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  padding: 6px;
-}
-
-.page-participation > header h1 {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.page-participation > header p {
-  display: none;
-}
-
-/* Formulaire agrandi */
-
-.page-participation > form {
-  grid-column: 1;
-  grid-row: 2;
-  align-self: start;
-  min-width: 0;
-  margin: 0;
-  padding: 20px;
-  gap: 10px;
-}
-
-.page-participation > form h2 {
-  margin: 0 0 4px;
-  font-size: 18px;
-}
-
-.page-participation > form input,
-.page-participation > form textarea {
-  padding: 12px;
-  font-size: 16px;
-}
-
-.page-participation > form textarea {
-  height: 100px;
-  min-height: 100px;
-  resize: none;
-}
-
-.page-participation > form button {
-  padding: 14px;
-}
-
-/* Panneau des notes */
-
-.page-participation > .messages-participation {
-  grid-column: 2;
-  grid-row: 2;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.messages-participation > h2 {
-  flex: 0 0 auto;
-  margin: 0 0 6px;
-  padding: 7px;
-  font-size: 14px;
-  border-radius: 8px;
-  background: #160e0be6;
-}
-
-/* Seule cette zone défile */
-
-.notes-defilantes {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 0;
-  padding: 12px 8px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-
-  display: grid;
-  grid-template-columns:
-    repeat(auto-fill, minmax(min(100%, 155px), 1fr));
-  align-content: start;
-  align-items: start;
-  gap: 14px;
-}
-
-.notes-defilantes > p {
-  grid-column: 1 / -1;
-}
-
-.page-participation > .lien-mur {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  margin: 0 auto;
-}
-
-/* Petites notes en papier */
-
-article {
+:is(.page-mur .liste-messages, .messages-participation) article {
   position: relative;
-  min-width: 0;
-  padding: 18px 12px 12px;
+  padding: 28px 22px 22px;
   color: #292524;
-  border-radius: 4px;
-  background-color: #fff3b0;
-  box-shadow: 3px 6px 14px #0006;
-  overflow-wrap: anywhere;
+  border: 0;
+  border-radius: 3px;
+  background: #fff3b0;
+  box-shadow: 4px 8px 16px #00000055;
 }
 
-/* Couleurs par défaut si aucune couleur n'est définie dans React */
-
-.page-participation article:nth-of-type(3n + 2),
-.page-mur .liste-messages article:nth-of-type(3n + 2) {
-  background-color: #d9f2dd;
+:is(.page-mur .liste-messages, .messages-participation) article:nth-child(3n + 2) {
+  background: #d9f2dd;
 }
 
-.page-participation article:nth-of-type(3n),
-.page-mur .liste-messages article:nth-of-type(3n) {
-  background-color: #fce0e8;
+:is(.page-mur .liste-messages, .messages-participation) article:nth-child(3n) {
+  background: #fce0e8;
 }
 
-/* Ruban adhésif */
-
-article::before {
+:is(.page-mur .liste-messages, .messages-participation) article::before {
   content: "";
   position: absolute;
-  top: -7px;
-  left: calc(50% - 23px);
-  width: 46px;
-  height: 17px;
+  top: -10px;
+  left: calc(50% - 32px);
+  width: 64px;
+  height: 24px;
   background: #ffffff99;
   transform: rotate(-5deg);
 }
 
-article > strong {
+:is(.page-mur .liste-messages, .messages-participation) article > strong {
   color: #713f12;
-  font-size: 0.85rem;
 }
 
-article p {
-  margin: 7px 0;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  white-space: pre-wrap;
-}
-
-/* Réponses */
-
-.reponse-animateur {
-  margin-top: 8px;
-  padding: 8px;
-  border-left: 3px solid #0f766e;
-  border-radius: 6px;
+:is(.page-mur, .page-participation) .reponse-animateur{
+  border-left-color: #0f766e;
   background: #ffffffaa;
 }
 
-.reponse-animateur strong {
-  font-size: 0.75rem;
+:is(.page-mur, .page-participation) .reponse-animateur strong {
   color: #115e59;
-}
-
-.reponse-animateur p {
-  margin-bottom: 0;
-}
-
-/* Choix de couleur */
-
-.choix-couleur {
-  min-width: 0;
-  margin: 0;
-  padding: 6px 0;
-  border: 0;
-
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.choix-couleur legend {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.choix-couleur label {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 6px;
-  color: #292524;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  cursor: pointer;
-}
-
-.page-participation .choix-couleur input {
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  padding: 0;
-  accent-color: #115e59;
-}
-
-/* Mur de projection */
-
-.page-mur {
-  width: 100%;
-  min-height: 100dvh;
-}
-
-.mur {
-  padding-top: 24px;
-}
-
-.liste-messages,
-.liste-messages-admin {
-  display: grid;
-  grid-template-columns:
-    repeat(auto-fill, minmax(min(100%, 220px), 1fr));
-  gap: 22px;
-  align-items: start;
-}
-
-/* Espace animateur */
-
-.page-admin header {
-  margin-bottom: 24px;
-}
-
-.form-reponse {
-  padding: 0;
-  margin-top: 14px;
-  background: transparent;
-}
-
-.form-reponse label,
-.form-reponse > p {
-  color: #292524;
-}
-
-.page-admin > .lien-mur {
-  margin-top: 20px;
 }
 
 /* QR code */
@@ -415,12 +293,13 @@ article p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: fit-content;
-  margin: 24px auto 0;
-  padding: 16px;
+  margin: 30px auto 0;
+  padding: 14px;
   color: #070b18;
-  border-radius: 12px;
+  text-align: center;
+  border-radius: 16px;
   background: white;
 }
 
@@ -428,65 +307,318 @@ article p {
   display: block;
 }
 
-/* Téléphone : formulaire au-dessus des notes */
+/* Animation */
 
-@media (max-width: 650px) {
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Téléphones */
+
+@media (max-width: 600px) {
+  .page-admin {
+    padding: 20px 12px;
+  }
+
+  .liste-messages-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .page-participation {
+    padding: 16px 12px;
+  }
+
+  .page-participation header {
+    padding: 12px 0;
+  }
+
+  .page-participation h1 {
+    font-size: 2rem;
+  }
+
+  .page-participation header > p:first-child {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+
+  .page-participation form {
+    padding: 16px;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .page-participation form h2 {
+    margin: 0 0 8px;
+    font-size: 1.3rem;
+  }
+
+  .page-participation textarea {
+    min-height: 70px;
+  }
+
+  .page-participation form > p {
+    margin: 4px 0;
+    font-size: 0.85rem;
+  }
+
+  .messages-participation {
+    margin-top: 12px;
+    padding: 16px;
+  }
+
+  .messages-participation h2 {
+    font-size: 1.3rem;
+  }
+}
+/* Formulaire et messages sur le même mur */
+
+.page-participation {
+  max-width: 760px;
+}
+
+.page-participation header,
+.page-participation form {
+  border-radius: 18px;
+  background: #160e0be6;
+  box-shadow: 0 8px 24px #00000040;
+}
+
+.page-participation header {
+  margin-bottom: 20px;
+}
+
+.page-participation .messages-participation {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.messages-participation > h2,
+.messages-participation > p {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border-radius: 10px;
+  background: #160e0be6;
+}
+/* Formulaire à gauche, notes à droite */
+.page-participation {
+  width: min(1200px, 100%);
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.page-participation > header,
+.page-participation > .lien-mur {
+  grid-column: 1 / -1;
+}
+
+.page-participation > form {
+  margin: 0;
+}
+
+.page-participation > .messages-participation {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 220px), 1fr)
+  );
+  gap: 24px;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.messages-participation > h2,
+.messages-participation > p {
+  grid-column: 1 / -1;
+}
+
+/* Notes colorées */
+.page-participation .messages-participation > article {
+  position: relative;
+  min-height: 160px;
+  padding: 24px 18px 18px;
+  color: #292524;
+  border: 0;
+  border-radius: 4px;
+  background: #fff3b0;
+  box-shadow: 3px 6px 14px #00000040;
+}
+
+.page-participation .messages-participation > article:nth-of-type(3n + 2) {
+  background: #d9f2dd;
+}
+
+.page-participation .messages-participation > article:nth-of-type(3n) {
+  background: #fce0e8;
+}
+
+.page-participation .messages-participation > article > strong {
+  color: #713f12;
+}
+
+.page-participation .messages-participation .reponse-animateur {
+  border-left-color: #0f766e;
+  background: #ffffffaa;
+}
+
+.page-participation .messages-participation .reponse-animateur strong {
+  color: #115e59;
+}
+
+/* Téléphone : notes sous le formulaire */
+@media (max-width: 750px) {
   .page-participation {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Petites notes sur la page du formulaire */
+.page-participation > .messages-participation {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 180px), 1fr)
+  );
+  gap: 16px;
+  align-items: start;
+  align-content: start;
+}
+
+.page-participation .messages-participation > article {
+  min-height: 0;
+  padding: 16px 12px 12px;
+}
+
+.page-participation .messages-participation > article > strong {
+  font-size: 0.85rem;
+}
+
+.page-participation .messages-participation article p {
+  margin: 8px 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.page-participation .messages-participation .reponse-animateur {
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.page-participation .messages-participation .reponse-animateur strong {
+  font-size: 0.75rem;
+}
+/* Seules les notes défilent */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+main.page-participation {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  min-height: 0;
+  margin: 0;
+  padding: 12px;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.page-participation > header {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 8px;
+}
+
+.page-participation > header h1 {
+  margin: 4px 0;
+  font-size: 1.25rem;
+}
+
+.page-participation > form {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  margin: 0;
+  padding: 12px;
+  gap: 6px;
+}
+
+.page-participation > form h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.page-participation > form textarea {
+  min-height: 60px;
+}
+
+.page-participation > form > p {
+  margin: 4px 0;
+}
+
+.page-participation > .messages-participation {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 12px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  align-content: start;
+  align-items: start;
+}
+
+.page-participation > .lien-mur {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 0 auto;
+  padding: 6px 12px;
+}
+
+/* Téléphone : formulaire fixe au-dessus des notes */
+@media (max-width: 750px) {
+  main.page-participation {
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto minmax(0, 1fr) auto;
-    gap: 6px;
-    padding: 6px;
-  }
-
-  .page-participation > header {
-    grid-column: 1;
-    grid-row: 1;
-    padding: 3px;
-  }
-
-  .page-participation > header h1 {
-    font-size: 16px;
+    gap: 8px;
   }
 
   .page-participation > form {
     grid-column: 1;
     grid-row: 2;
-    padding: 10px;
-    gap: 4px;
-  }
-
-  .page-participation > form h2 {
-    display: none;
-  }
-
-  .page-participation > form input,
-  .page-participation > form textarea {
-    padding: 6px;
-    font-size: 16px;
-  }
-
-  .page-participation > form textarea {
-    height: 50px;
-    min-height: 50px;
-  }
-
-  .page-participation > form button {
-    padding: 9px;
-  }
-
-  .page-participation .choix-couleur {
-    padding: 3px 0;
-    gap: 4px;
-  }
-
-  .page-participation .choix-couleur label {
-    padding: 4px;
-  }
-
-  .page-participation .choix-couleur input {
-    width: 14px;
-    height: 14px;
-    padding: 0;
   }
 
   .page-participation > .messages-participation {
@@ -494,31 +626,20 @@ article p {
     grid-row: 3;
   }
 
-  .messages-participation > h2 {
-    padding: 6px;
-    margin-bottom: 2px;
-    font-size: 0.85rem;
-  }
-
-  .notes-defilantes {
-    grid-template-columns:
-      repeat(auto-fill, minmax(min(100%, 140px), 1fr));
-    gap: 12px;
-  }
-
   .page-participation > .lien-mur {
-    grid-column: 1;
     grid-row: 4;
-    padding: 4px 10px;
   }
-}
 
-/* Petite hauteur : garder tous les champs accessibles */
+  .page-participation > header p {
+    display: none;
+  }
 
-@media (max-height: 580px) {
-  .page-participation > form {
-    max-height: 100%;
-    min-height: 0;
-    overflow-y: auto;
+  .page-participation > form input,
+  .page-participation > form textarea {
+    padding: 8px;
+  }
+
+  .page-participation > form button {
+    padding: 10px;
   }
 }
