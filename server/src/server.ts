@@ -399,6 +399,23 @@ async function demarrerServeur() {
             }
         });
 
+        await abonnementRedis.subscribe(canalSuppressions, (contenu) => {
+            try {
+                const suppression = JSON.parse(contenu) as {
+                    tout?: boolean;
+                    id?: number;
+                };
+
+                if (suppression.tout === true) {
+                    appliquerSuppression();
+                } else if (Number.isSafeInteger(suppression.id)) {
+                    appliquerSuppression(suppression.id);
+                }
+            } catch {
+                console.error("Suppression Redis invalide ignorée.");
+            }
+        });
+
         redisDisponible = true;
 
         console.log(
