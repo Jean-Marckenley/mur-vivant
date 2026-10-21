@@ -693,20 +693,46 @@ main.page-participation {
 .page-mur .liste-messages article:nth-of-type(3n) {
   background-color: #fce0e8;
 }
-/* Espacement entre les notes */
-.page-participation > .messages-participation,
-.page-participation .notes-defilantes,
-.page-mur .liste-messages {
-  gap: 28px;
-  grid-auto-rows: auto;
-  align-items: start;
+/* Notes directement dans la section */
+main.page-participation > .messages-participation {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+  grid-template-rows: none;
+  grid-auto-rows: max-content;
   align-content: start;
+  align-items: start;
+  gap: 32px;
+  padding: 18px;
 }
 
-.page-participation .messages-participation article,
-.page-mur .liste-messages article {
+.messages-participation > h2,
+.messages-participation > p {
+  grid-column: 1 / -1;
+}
+
+/* Compatible avec le conteneur notes-defilantes */
+main.page-participation
+> .messages-participation:has(> .notes-defilantes) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+}
+
+.page-participation .notes-defilantes {
+  display: grid;
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
+  gap: 32px;
+  padding: 18px;
+}
+
+.page-participation .messages-participation article {
   height: auto;
-  max-height: none;
   min-height: 0;
+  max-height: none;
   margin: 0;
+  align-self: start;
 }
