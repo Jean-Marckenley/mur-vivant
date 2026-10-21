@@ -233,6 +233,7 @@ article {
   border-radius: 4px;
   box-shadow: 3px 6px 14px #0006;
   overflow-wrap: anywhere;
+  background-color: #fff3b0;
 }
 article:before {
   content: "";
