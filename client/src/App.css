@@ -1142,3 +1142,22 @@ main.page-mur > .mur {
     padding: 12px 20px;
   }
 }
+/* Permettre le défilement dans l’espace admin */
+html:has(.page-admin),
+body:has(.page-admin) {
+  height: auto;
+  overflow-y: auto;
+}
+
+#root:has(.page-admin) {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
+main.page-admin {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  padding-bottom: 30px;
+}
