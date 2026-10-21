@@ -1051,7 +1051,89 @@ main.page-mur > .mur {
         padding: 10px 20px;
       }
     }}
+  @media (max-width: 750px) {
+    main.page-participation {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: none;
+      height: 100dvh;
+      min-height: 0;
+      margin: 0;
+      padding: 8px;
 
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    main.page-participation > header {
+      flex: 0 0 auto;
+      align-self: flex-start;
+      margin: 0;
+    }
+
+    main.page-participation > .messages-participation {
+      display: none;
+    }
+
+    main.page-participation > form {
+      box-sizing: border-box;
+      flex: 1 0 auto;
+      align-self: stretch;
+      width: 100%;
+      max-width: none;
+      min-height: 0;
+      max-height: none;
+      margin: 0;
+      padding: clamp(12px, 4vw, 24px);
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: visible;
+    }
+
+    main.page-participation > form input,
+    main.page-participation > form textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      font-size: 16px;
+    }
+
+    main.page-participation > form textarea {
+      flex: 1 0 100px;
+      height: auto;
+      min-height: 100px;
+      max-height: none;
+      resize: none;
+    }
+
+    main.page-participation .choix-couleur input {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+    }
+
+    main.page-participation > form button {
+      flex: 0 0 auto;
+      width: 100%;
+      min-height: 48px;
+      margin-top: auto;
+    }
+
+    main.page-participation > .lien-mur {
+      display: block;
+      flex: 0 0 auto;
+      align-self: center;
+      margin: 0;
+      padding: 10px 18px;
+    }
+  }
   main.page-participation > .lien-mur {
     display: block;
     flex: 0 0 auto;
