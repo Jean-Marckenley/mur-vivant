@@ -81,6 +81,36 @@ app.get("/api/health", (_req, res) => {
         messages: messages.length,
     });
 });
+const canalSuppressions = "mur-suppressions";
+const motDePasseAdmin = process.env.ADMIN_PASSWORD;
+
+interface SuppressionEntrante {
+    motDePasse: string;
+    id?: number;
+}
+
+type ResultatSuppression = {
+    ok: boolean;
+    erreur?: string;
+};
+
+type ConfirmationSuppression = (
+    resultat: ResultatSuppression,
+) => void;
+
+function appliquerSuppression(id?: number) {
+    if (id === undefined) {
+        messages.length = 0;
+    } else {
+        const index = messages.findIndex((message) => message.id === id);
+
+        if (index !== -1) {
+            messages.splice(index, 1);
+        }
+    }
+
+    io.emit("historique", messages);
+}
 io.on("connection", (socket) => {
     participants++;
 
