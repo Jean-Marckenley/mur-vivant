@@ -912,3 +912,36 @@ main.page-mur > header > p:first-child {
   font-size: 10px;
   letter-spacing: 2px;
 }
+html:has(.page-mur),
+body:has(.page-mur) {
+  height: 100%;
+  overflow: hidden;
+}
+
+#root:has(.page-mur) {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+main.page-mur {
+  height: 100dvh;
+  min-height: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+main.page-mur > header {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+main.page-mur > .mur {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 12px;
+  overflow-y: auto;
+}
